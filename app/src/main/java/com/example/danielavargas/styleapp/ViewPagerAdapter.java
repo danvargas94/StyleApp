@@ -8,6 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.parse.ParseObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by danielavargas on 23/04/17.
  */
@@ -15,29 +21,22 @@ import android.widget.ImageView;
 public class ViewPagerAdapter extends PagerAdapter{
 
     private Context context;
-    private String tag;
-    private String weather;
-    private LayoutInflater layoutInflater;
-    private Integer [] images = {R.drawable.back, R.drawable.background, R.drawable.fondo};
-    private Integer [] upImages = {R.drawable.blusa1, R.drawable.blusa2};
-    private Integer [] pantsImages = {R.drawable.falda3, R.drawable.pants1};
-    private Integer [] shoesImages = {R.drawable.shoes1, R.drawable.shoes2};
 
-    public  ViewPagerAdapter(Context context, String weather, String tag){
-        this.weather = weather;
-        this.tag = tag;
+
+    private LayoutInflater layoutInflater;
+    private List<ParseObject> images = new ArrayList<ParseObject>();;
+
+    public  ViewPagerAdapter(Context context,List<ParseObject> images){
+
         this.context = context;
+        this.images = images;
+
+
     }
 
     @Override
     public int getCount() {
-        if (tag.equals("up")){
-            return upImages.length;
-        }else  if (tag.equals("pants")){
-            return pantsImages.length;
-        }else {
-            return shoesImages.length;
-        }
+       return images.size();
     }
 
     @Override
@@ -50,14 +49,14 @@ public class ViewPagerAdapter extends PagerAdapter{
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.custom_layout, null);
         ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
-        if (tag.equals("up")){
-            imageView.setImageResource(upImages[position]);
-        }else  if (tag.equals("pants")){
-            imageView.setImageResource(pantsImages[position]);
-        }else {
-            imageView.setImageResource(shoesImages[position]);
-        }
 
+        //
+        ParseObject clothes = images.get(position);
+
+        if(clothes.getParseFile("image") != null){
+            System.out.println("Imagen: "+clothes.getParseFile("image").getUrl());
+            Glide.with(context).load(clothes.getParseFile("image").getUrl()).into(imageView);
+        }
 
         ViewPager vp = (ViewPager) container;
         vp.addView(view, 0);

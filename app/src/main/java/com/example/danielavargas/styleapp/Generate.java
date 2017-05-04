@@ -15,83 +15,63 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Generate extends AppCompatActivity {
-
+    Context contex;
     ViewPager upViewPager, pantsViewPager, shoesViewPager;
-    List<ParseObject> upClothes = new ArrayList<ParseObject>();
-    List<ParseObject> pantsClothes = new ArrayList<ParseObject>();
-    List<ParseObject> shoes = new ArrayList<ParseObject>();
-
+    String weather = "veryhot";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generate);
-
+        contex = getApplicationContext();
         //getImages("veryhot");
-        final Context context = getApplicationContext();
-        String weather = "veryhot";
+
+
+
+        pantsViewPager = (ViewPager) findViewById(R.id.pantsViewPager);
+        upViewPager = (ViewPager) findViewById(R.id.upViewPager);
+        shoesViewPager = (ViewPager) findViewById(R.id.shoesViewPager);
+
+        getImages();
+
+    }
+
+    public void getImages(){
 
         final ParseQuery<ParseObject> query = ParseQuery.getQuery("Tag");
         query.whereEqualTo("name", weather);
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> weatherList, ParseException e) {
                 if (e == null) {
-                    ParseQuery<ParseObject> queryPants = ParseQuery.getQuery("Clothes");
-                    queryPants.whereEqualTo("part", "pants");
-                    queryPants.whereEqualTo("tag", weatherList.get(0));
-                    queryPants.findInBackground(new FindCallback<ParseObject>() {
-                        public void done(List<ParseObject> scoreList, ParseException e) {
-                            if (e == null) {
-                                for (ParseObject temp : scoreList) {
-                                    pantsClothes.add(temp);
-                                }
-                                System.out.println("pants " + pantsClothes.size());
-                                pantsViewPager = (ViewPager) findViewById(R.id.pantsViewPager);
-                                ViewPagerAdapter pantsViewPagerAdapter = new ViewPagerAdapter(context, "veryhot", "pants");
-                                pantsViewPager.setAdapter(pantsViewPagerAdapter);
-                            } else {
-                                Log.d("score", "Error: " + e.getMessage());
-                            }
-                        }
-                    });
 
-                    ParseQuery<ParseObject> queryUp = ParseQuery.getQuery("Clothes");
-                    queryUp.whereEqualTo("part", "up");
-                    queryUp.whereEqualTo("tag", weatherList.get(0));
-                    queryUp.findInBackground(new FindCallback<ParseObject>() {
-                        public void done(List<ParseObject> scoreList, ParseException e) {
-                            if (e == null) {
-                                for (ParseObject temp : scoreList) {
-                                    upClothes.add(temp);
-                                }
-                                System.out.println("UP " + upClothes.size());
-                                upViewPager = (ViewPager) findViewById(R.id.upViewPager);
-                                ViewPagerAdapter upViewPagerAdapter = new ViewPagerAdapter(context, "veryhot", "up");
-                                upViewPager.setAdapter(upViewPagerAdapter);
-                            } else {
-                                Log.d("score", "Error: " + e.getMessage());
-                            }
-                        }
-                    });
 
-                    ParseQuery<ParseObject> queryShoes = ParseQuery.getQuery("Clothes");
-                    queryShoes.whereEqualTo("part", "shoes");
-                    queryShoes.whereEqualTo("tag", weatherList.get(0));
-                    queryShoes.findInBackground(new FindCallback<ParseObject>() {
-                        public void done(List<ParseObject> scoreList, ParseException e) {
-                            if (e == null) {
-                                for (ParseObject temp : scoreList) {
-                                    shoes.add(temp);
-                                }
-                                System.out.println("shoes " + shoes.size());
-                                shoesViewPager = (ViewPager) findViewById(R.id.shoesViewPager);
-                                ViewPagerAdapter shoesViewPagerAdapter = new ViewPagerAdapter(context, "veryhot", "shoes");
-                                shoesViewPager.setAdapter(shoesViewPagerAdapter);
-                            } else {
-                                Log.d("score", "Error: " + e.getMessage());
-                            }
-                        }
-                    });
+                    if(weatherList.size() != 0){
+
+                        getPants(weatherList.get(0));
+                        getUp(weatherList.get(0));
+                        getShoes(weatherList.get(0));
+                    }
+
+
+
+                } else {
+                    Log.d("score", "Error: " + e.getMessage());
+                }
+            }
+        });
+
+    }
+
+    public void getPants(ParseObject weatherList){
+
+        ParseQuery<ParseObject> queryPants = ParseQuery.getQuery("Clothes");
+        queryPants.whereEqualTo("part", "pants");
+        queryPants.whereEqualTo("tag", weatherList);
+        queryPants.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> pantsList, ParseException e) {
+                if (e == null) {
+                    ViewPagerAdapter pantsViewPagerAdapter = new ViewPagerAdapter(contex, pantsList);
+                    pantsViewPager.setAdapter(pantsViewPagerAdapter);
                 } else {
                     Log.d("score", "Error: " + e.getMessage());
                 }
@@ -99,63 +79,42 @@ public class Generate extends AppCompatActivity {
         });
     }
 
-    public void getImages(final String weather){
-        final ParseQuery<ParseObject> query = ParseQuery.getQuery("Tag");
-        query.whereEqualTo("name", weather);
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> weatherList, ParseException e) {
+    public void getUp(ParseObject weatherList){
+
+        ParseQuery<ParseObject> queryUp = ParseQuery.getQuery("Clothes");
+        queryUp.whereEqualTo("part", "up");
+        queryUp.whereEqualTo("tag", weatherList);
+        queryUp.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> upList, ParseException e) {
                 if (e == null) {
-                    ParseQuery<ParseObject> queryPants = ParseQuery.getQuery("Clothes");
-                    queryPants.whereEqualTo("part", "pants");
-                    queryPants.whereEqualTo("tag", weatherList.get(0));
-                    queryPants.findInBackground(new FindCallback<ParseObject>() {
-                        public void done(List<ParseObject> scoreList, ParseException e) {
-                            if (e == null) {
-                                for (ParseObject temp : scoreList) {
-                                    pantsClothes.add(temp);
-                                    System.out.println(pantsClothes);
-                                }
-                            } else {
-                                Log.d("score", "Error: " + e.getMessage());
-                            }
-                        }
-                    });
-
-                    ParseQuery<ParseObject> queryUp = ParseQuery.getQuery("Clothes");
-                    queryUp.whereEqualTo("part", "up");
-                    queryUp.whereEqualTo("tag", weatherList.get(0));
-                    queryUp.findInBackground(new FindCallback<ParseObject>() {
-                        public void done(List<ParseObject> scoreList, ParseException e) {
-                            if (e == null) {
-                                for (ParseObject temp : scoreList) {
-                                    upClothes.add(temp);
-                                    System.out.println(upClothes);
-                                }
-                            } else {
-                                Log.d("score", "Error: " + e.getMessage());
-                            }
-                        }
-                    });
-
-                    ParseQuery<ParseObject> queryShoes = ParseQuery.getQuery("Clothes");
-                    queryShoes.whereEqualTo("part", "shoes");
-                    queryShoes.whereEqualTo("tag", weatherList.get(0));
-                    queryShoes.findInBackground(new FindCallback<ParseObject>() {
-                        public void done(List<ParseObject> scoreList, ParseException e) {
-                            if (e == null) {
-                                for (ParseObject temp : scoreList) {
-                                    shoes.add(temp);
-                                    System.out.println(shoes);
-                                }
-                            } else {
-                                Log.d("score", "Error: " + e.getMessage());
-                            }
-                        }
-                    });
+                    ViewPagerAdapter upViewPagerAdapter = new ViewPagerAdapter(contex, upList);
+                    upViewPager.setAdapter(upViewPagerAdapter);
                 } else {
                     Log.d("score", "Error: " + e.getMessage());
                 }
             }
         });
+
     }
+
+    public void getShoes(ParseObject weatherList){
+
+        ParseQuery<ParseObject> queryShoes = ParseQuery.getQuery("Clothes");
+        queryShoes.whereEqualTo("part", "shoes");
+        queryShoes.whereEqualTo("tag", weatherList);
+        queryShoes.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> shoesList, ParseException e) {
+                if (e == null) {
+
+                    ViewPagerAdapter shoesViewPagerAdapter = new ViewPagerAdapter(contex, shoesList);
+                    shoesViewPager.setAdapter(shoesViewPagerAdapter);
+                } else {
+                    Log.d("score", "Error: " + e.getMessage());
+                }
+            }
+        });
+
+    }
+
+
 }

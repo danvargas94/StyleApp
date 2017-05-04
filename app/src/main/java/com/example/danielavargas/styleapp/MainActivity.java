@@ -22,11 +22,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Parse.initialize(new Parse.Configuration.Builder(this)
-                .applicationId("6gzBfgad2irRCWsbK38njQ6s9wo49M6Yn6Y8pL2l")
-                .clientKey("bEisAzCDb9gSX4YDhDVJn6ubzaGiLdmU8SS7D4HF")
-                .server("https://parseapi.back4app.com/").build()
-        );
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Tag");
         query.findInBackground(new FindCallback<ParseObject>() {
