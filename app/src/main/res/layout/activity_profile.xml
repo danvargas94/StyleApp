@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_profile"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/back"
+    tools:context="com.example.danielavargas.styleapp.Profile">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginBottom="80dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:gravity="center_horizontal"
+        android:background="@android:color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="210dp"
+                android:layout_height="145dp"
+                android:id="@+id/imageView4"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center_horizontal"
+
+                app:srcCompat="@drawable/profile" />
+
+            <TextView
+                android:text="Claudia Pedraza"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textSize="22sp"
+                android:textAllCaps="true"
+                android:textColor="@android:color/black"
+                android:textAlignment="center"
+                android:id="@+id/name" />
+
+            <TextView
+                android:text="claudiapedraza@gmail.com"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:textSize="15sp"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:layout_height="wrap_content"
+                android:id="@+id/email" />
+
+            <TextView
+                android:text="New York"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:layout_marginTop="10dp"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:id="@+id/city" />
+
+            <TextView
+                android:text="Female"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:layout_marginTop="10dp"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:id="@+id/gender" />
+
+            <TextView
+                android:text="27 years"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:layout_marginTop="10dp"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:id="@+id/age" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
