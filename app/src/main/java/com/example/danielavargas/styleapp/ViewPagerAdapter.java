@@ -24,7 +24,7 @@ public class ViewPagerAdapter extends PagerAdapter{
 
 
     private LayoutInflater layoutInflater;
-    private List<ParseObject> images = new ArrayList<ParseObject>();;
+    private List<ParseObject> images = new ArrayList<ParseObject>();
 
     public  ViewPagerAdapter(Context context,List<ParseObject> images){
 

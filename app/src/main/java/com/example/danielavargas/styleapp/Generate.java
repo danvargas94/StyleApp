@@ -11,7 +11,6 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Generate extends AppCompatActivity {
@@ -37,25 +36,19 @@ public class Generate extends AppCompatActivity {
     }
 
     public void getImages(){
-
         final ParseQuery<ParseObject> query = ParseQuery.getQuery("Tag");
         query.whereEqualTo("name", weather);
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> weatherList, ParseException e) {
                 if (e == null) {
-
-
                     if(weatherList.size() != 0){
-
                         getPants(weatherList.get(0));
                         getUp(weatherList.get(0));
                         getShoes(weatherList.get(0));
                     }
 
-
-
                 } else {
-                    Log.d("score", "Error: " + e.getMessage());
+                    Log.d("score", "Error: " + e.getMessage() + e.getCode());
                 }
             }
         });
