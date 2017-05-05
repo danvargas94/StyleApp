@@ -1,10 +1,12 @@
 package com.example.danielavargas.styleapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -16,7 +18,7 @@ import java.util.List;
 public class Generate extends AppCompatActivity {
     Context contex;
     ViewPager upViewPager, pantsViewPager, shoesViewPager;
-    String weather = "veryhot";
+    String weather = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +26,11 @@ public class Generate extends AppCompatActivity {
         setContentView(R.layout.activity_generate);
         contex = getApplicationContext();
         //getImages("veryhot");
+
+        Intent intent = getIntent();
+        String intentStringExtra = intent.getStringExtra("weather");
+        System.out.println("intent " + intentStringExtra);
+        weather = intentStringExtra;
 
 
 
@@ -37,11 +44,26 @@ public class Generate extends AppCompatActivity {
 
     public void getImages(){
         final ParseQuery<ParseObject> query = ParseQuery.getQuery("Tag");
+        if (weather.contains("error")){
+            Toast.makeText(this, "Error, volver a cargar", Toast.LENGTH_LONG).show();
+        }
+        if (weather.contains("vh")){
+            weather = "vh";
+        } else if (weather.contains("normal")) {
+            weather = "normal";
+        } else if (weather.contains("hot")) {
+            weather = "hot";
+        }else if (weather.contains("cold")) {
+            weather = "cold";
+        }else if (weather.contains("vc")) {
+            weather = "vc";
+        }
         query.whereEqualTo("name", weather);
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> weatherList, ParseException e) {
                 if (e == null) {
                     if(weatherList.size() != 0){
+                        System.out.println("VA POR ROPA");
                         getPants(weatherList.get(0));
                         getUp(weatherList.get(0));
                         getShoes(weatherList.get(0));
