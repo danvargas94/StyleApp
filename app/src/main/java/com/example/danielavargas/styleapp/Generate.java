@@ -45,7 +45,7 @@ public class Generate extends AppCompatActivity {
     public void getImages(){
         final ParseQuery<ParseObject> query = ParseQuery.getQuery("Tag");
         if (weather.contains("error")){
-            Toast.makeText(this, "Error, volver a cargar", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Error, try to reload again", Toast.LENGTH_LONG).show();
         }
         if (weather.contains("vh")){
             weather = "vh";
