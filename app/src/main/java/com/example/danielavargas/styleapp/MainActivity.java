@@ -1,5 +1,6 @@
 package com.example.danielavargas.styleapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -26,12 +28,12 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout profile, clothes, generate;
 
     String tag = "";
-
+    Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        context = getApplicationContext();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Tag");
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> scoreList, ParseException e) {
@@ -84,25 +86,30 @@ public class MainActivity extends AppCompatActivity {
             try {
                 URL url = new URL(params[0]);
                 connection = (HttpURLConnection) url.openConnection();
+                connection.setConnectTimeout(2000);
                 connection.connect();
 
+                int response = connection.getResponseCode();
 
-                InputStream stream = connection.getInputStream();
+                System.out.println("RESPONSE " + response);
+                if (response == HttpURLConnection.HTTP_OK){
+                    InputStream stream = connection.getInputStream();
 
-                reader = new BufferedReader(new InputStreamReader(stream));
+                    reader = new BufferedReader(new InputStreamReader(stream));
 
-                StringBuffer buffer = new StringBuffer();
-                String line = "";
+                    StringBuffer buffer = new StringBuffer();
+                    String line = "";
 
-                while ((line = reader.readLine()) != null) {
-                    buffer.append(line+"\n");
-                    Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
+                    while ((line = reader.readLine()) != null) {
+                        buffer.append(line+"\n");
+                        Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
 
+                    }
+
+                    return buffer.toString();
+                }else{
+                    Toast.makeText(context, "Error, try again", Toast.LENGTH_LONG).show();
                 }
-
-                return buffer.toString();
-
-
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -125,10 +132,13 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            System.out.println(result.equals("vh"));
-            Intent intent = new Intent(MainActivity.this, Generate.class);
-            intent.putExtra("weather", result);
-            startActivity(intent);
+            if (result == null){
+                Toast.makeText(context, "Error, try again", Toast.LENGTH_LONG).show();
+            }else {
+                Intent intent = new Intent(MainActivity.this, Generate.class);
+                intent.putExtra("weather", result);
+                startActivity(intent);
+            }
         }
     }
 }
