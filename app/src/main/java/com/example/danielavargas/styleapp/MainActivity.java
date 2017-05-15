@@ -69,12 +69,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //String url = "http://10.25.47.245:8000/";
-                /*String url = "http://192.168.0.16:8000/";
+                String url = "http://10.25.47.245:8000/";
                 new getWeather().execute(url);
-                System.out.println(tag);*/
-                Intent intent = new Intent(MainActivity.this, Generate.class);
+                System.out.println(tag);
+                /*Intent intent = new Intent(MainActivity.this, Generate.class);
                 intent.putExtra("weather", "vh");
-                startActivity(intent);
+                startActivity(intent);*/
             }
         });
     }
